@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <script src="https://cdn.tailwindcss.com"></script>
+</head>
+
+<body class="bg-gradient-to-r from-blue-500 to-purple-600 flex items-center justify-center h-screen">
+
+  <div class="bg-white p-8 rounded-2xl shadow-xl w-96">
+    
+    <h2 class="text-2xl font-bold text-center mb-6">Welcome Back</h2>
+
+    <input id="email" type="email" placeholder="Email"
+      class="w-full p-3 mb-3 border rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-400" />
+
+    <input id="password" type="password" placeholder="Password"
+      class="w-full p-3 mb-4 border rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-400" />
+
+    <button onclick="login()"
+      class="w-full bg-blue-500 text-white py-3 rounded-lg hover:bg-blue-600">
+      Login
+    </button>
+
+    <p class="text-center mt-4 text-sm">
+      Don’t have an account?
+      <a href="signup.html" class="text-blue-500">Sign up</a>
+    </p>
+
+  </div>
+
+<script>
+async function login() {
+  const res = await fetch("http://localhost:5000/api/auth/login", {
+    method: "POST",
+    headers: {"Content-Type": "application/json"},
+    body: JSON.stringify({
+      email: email.value,
+      password: password.value
+    })
+  });
+
+  const data = await res.json();
+
+  if (data.token) {
+    localStorage.setItem("token", data.token);
+    window.location.href = "dashboard.html";
+  } else {
+    alert(data);
+  }
+}
+</script>
+
+</body>
+</html> 
