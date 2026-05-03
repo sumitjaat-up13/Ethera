@@ -92,6 +92,7 @@
 
 <script>
 
+
 const token = localStorage.getItem("token");
 
 if (!token) {
@@ -108,7 +109,7 @@ function logout() {
 async function createProject() {
   if (!projectName.value.trim()) return alert("Enter project name");
 
-  await fetch("http://localhost:5000/api/projects", {
+  await fetch("/api/projects", {   // ✅ FIXED
     method: "POST",
     headers: {
       "Content-Type": "application/json",
@@ -124,11 +125,11 @@ async function createProject() {
 // LOAD META
 async function loadMeta() {
   try {
-    const projects = await fetch("http://localhost:5000/api/projects", {
+    const projects = await fetch("/api/projects", {   // ✅ FIXED
       headers: { "Authorization": "Bearer " + token }
     }).then(r => r.json());
 
-    const users = await fetch("http://localhost:5000/api/users", {
+    const users = await fetch("/api/users", {   // ✅ FIXED
       headers: { "Authorization": "Bearer " + token }
     }).then(r => r.json());
 
@@ -156,7 +157,7 @@ async function loadTasks() {
   try {
     const selectedProject = document.getElementById("projectFilter").value;
 
-    let url = "http://localhost:5000/api/tasks";
+    let url = "/api/tasks";   // ✅ FIXED
     if (selectedProject) url += "?projectId=" + selectedProject;
 
     const res = await fetch(url, {
@@ -164,7 +165,6 @@ async function loadTasks() {
     });
 
     const tasks = await res.json();
-    console.log(tasks);
 
     let todo = 0, progress = 0, done = 0;
 
@@ -219,7 +219,7 @@ async function addTask() {
   }
 
   try {
-    const res = await fetch("http://localhost:5000/api/tasks", {
+    const res = await fetch("/api/tasks", {   // ✅ FIXED
       method: "POST",
       headers: {
         "Content-Type": "application/json",
@@ -233,7 +233,6 @@ async function addTask() {
     });
 
     const data = await res.json();
-    console.log(data);
 
     if (!res.ok) {
       alert(data);
@@ -251,7 +250,7 @@ async function addTask() {
 
 // UPDATE
 async function updateStatus(id, status) {
-  await fetch(`http://ethera-production.up.railway.app/api/tasks/${id}`, {
+  await fetch(`/api/tasks/${id}`, {   // ✅ FIXED
     method: "PUT",
     headers: {
       "Content-Type": "application/json",
