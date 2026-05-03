@@ -22,20 +22,31 @@ router.post("/signup", async (req, res) => {
 
 // Login
 router.post("/login", async (req, res) => {
-  const { email, password } = req.body;
+  try {
+    const { email, password } = req.body;
 
-  const user = await User.findOne({ email });
-  if (!user) return res.status(400).json("User not found");
+    console.log("LOGIN HIT:", email);
 
-  const isMatch = await bcrypt.compare(password, user.password);
-  if (!isMatch) return res.status(400).json("Wrong password");
+    const user = await User.findOne({ email });
+    if (!user) return res.status(400).json("User not found");
 
-  const token = jwt.sign(
-    { id: user._id, role: user.role },
-    process.env.JWT_SECRET
-  );
+    if (user.password !== password)
+      return res.status(400).json("Invalid password");
 
-  res.json({ token });
+    if (!process.env.JWT_SECRET) {
+      console.log("JWT_SECRET MISSING ❌");
+      return res.status(500).json("Server config error");
+    }
+
+    const token = jwt.sign(
+      { id: user._id },
+      process.env.JWT_SECRET
+    );
+
+    res.json({ token });
+
+  } catch (err) {
+    console.log("LOGIN ERROR:", err); // 🔥 THIS WILL SHOW REAL ERROR
+    res.status(500).json("Login failed");
+  }
 });
-
-module.exports = router;
