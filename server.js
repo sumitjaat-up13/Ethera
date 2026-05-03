@@ -7,6 +7,8 @@ const path = require("path");
 
 const app = express();
 
+console.log("MONGO_URI:", process.env.MONGO_URI);
+
 // Middleware
 app.use(cors());
 app.use(express.json());
@@ -15,10 +17,10 @@ app.use(express.json());
 app.use(express.static(path.join(__dirname, "public")));
 
 // Routes
-app.use("/api/auth", require("./routes/authRoutes"));
-app.use("/api/tasks", require("./routes/taskRoutes"));
-app.use("/api/projects", require("./routes/projectRoutes"));
-app.use("/api/users", require("./routes/userRoutes"));
+   app.use("/api/auth", require("./routes/authRoutes"));
+   app.use("/api/tasks", require("./routes/taskRoutes"));
+    app.use("/api/projects", require("./routes/projectRoutes"));
+    app.use("/api/users", require("./routes/userRoutes"));
 
 // Default route (IMPORTANT)
 app.get("/", (req, res) => {
