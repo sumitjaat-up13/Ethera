@@ -30,12 +30,10 @@
 
 <script>
 async function login() {
-  const email = document.getElementById("email").value;
-  const password = document.getElementById("password").value;
-
-  console.log("Sending request...");
-
   try {
+    const email = document.getElementById("email").value;
+    const password = document.getElementById("password").value;
+
     const res = await fetch("/api/auth/login", {
       method: "POST",
       headers: {
@@ -44,29 +42,25 @@ async function login() {
       body: JSON.stringify({ email, password })
     });
 
-    console.log("Status:", res.status);
-
+    // 🔥 SAFER PARSE
     let data;
-
-    // ✅ SAFE JSON PARSE (VERY IMPORTANT)
     try {
       data = await res.json();
     } catch {
-      data = "Invalid response from server";
+      alert("Server returned invalid response");
+      return;
     }
-
-    console.log("Response:", data);
 
     if (res.ok) {
       localStorage.setItem("token", data.token);
       window.location.href = "dashboard.html";
     } else {
-      alert(data || "Login failed");
+      alert(data.message || "Login failed");
     }
 
   } catch (err) {
-    console.error("ERROR:", err);
-    alert("Server not responding");
+    console.log(err);
+    alert("Network error");
   }
 }
 </script>
