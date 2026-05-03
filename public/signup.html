@@ -28,20 +28,31 @@
 
 <script>
 async function signup() {
-  await fetch("https://ethera-production.up.railway.app/api/tasks", {
+  const name = document.getElementById("name").value;
+  const email = document.getElementById("email").value;
+  const password = document.getElementById("password").value;
+
+  const res = await fetch("/api/auth/signup", {
     method: "POST",
-    headers: {"Content-Type": "application/json"},
-    body: JSON.stringify({
-      name: name.value,
-      email: email.value,
-      password: password.value,
-      role: "member"
-    })
+    headers: {
+      "Content-Type": "application/json"
+    },
+    body: JSON.stringify({ name, email, password })
   });
+
+  const data = await res.json();
+  console.log(data);
+
+  if (res.ok) {
+    alert("Signup successful");
+    window.location.href = "login.html";
+  } else {
+    alert(data);
+  }
+}
 
   alert("Signup successful");
   window.location.href = "login.html";
-}
 </script>
 
 </body>
