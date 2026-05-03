@@ -251,7 +251,7 @@ async function addTask() {
 
 // UPDATE
 async function updateStatus(id, status) {
-  await fetch(`http://localhost:5000/api/tasks/${id}`, {
+  await fetch(`http://ethera-production.up.railway.app/api/tasks/${id}`, {
     method: "PUT",
     headers: {
       "Content-Type": "application/json",

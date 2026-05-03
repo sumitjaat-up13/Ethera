@@ -28,7 +28,7 @@
 
 <script>
 async function signup() {
-  await fetch("http://localhost:5000/api/auth/signup", {
+  await fetch("https://ethera-production.up.railway.app/api/tasks", {
     method: "POST",
     headers: {"Content-Type": "application/json"},
     body: JSON.stringify({
